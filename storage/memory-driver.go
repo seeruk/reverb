@@ -56,5 +56,11 @@ func (d *MemoryDriver) Persist(src *model.Request) error {
 
 	d.requests = append(d.requests, *src)
 
+	count := len(d.requests)
+	if count > 100 {
+		// Currently we're limiting the number of requests stored in memory to 100.
+		d.requests = d.requests[count-100 : count]
+	}
+
 	return nil
 }
