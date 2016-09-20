@@ -1,17 +1,32 @@
 package resources
 
-import "net/http"
+import (
+	"net/http"
+	"os"
+
+	"github.com/gorilla/handlers"
+)
 
 type Route struct {
-	Path        string
-	Method      string
-	HandlerFunc http.HandlerFunc
+	Path    string
+	Method  string
+	Handler http.Handler
 }
 
-func noopHandlerFunc(http.ResponseWriter, *http.Request) {}
+// BuildRoutes takes pre-configured handlers, and assigns them to routes.
+func BuildRoutes(services Services) []Route {
+	return []Route{
+		// Retrieval
+		{"/reverb", "GET", applyMiddleware(services.ReverbCollectionHandler)},
+		{"/reverb/{id:[0-9]+}", "GET", applyMiddleware(services.ReverbResourceHandler)},
+		{"/reverb/{id:[0-9]+}/body", "GET", applyMiddleware(services.ReverbResourceBodyHandler)},
 
-var Routes = []Route{
-	{"/reverb", "GET", noopHandlerFunc},
-	{"/reverb/{id:[0-9]+}", "GET", noopHandlerFunc},
-	{"/api/{path:.*}", "*", noopHandlerFunc},
+		// Submission
+		{"/api/{path:.*}", "*", applyMiddleware(services.ApiHandler)},
+	}
+}
+
+// applyMiddleware applies common middleware to some http.HandlerFunc, returning a http.Handler.
+func applyMiddleware(in http.HandlerFunc) http.Handler {
+	return handlers.LoggingHandler(os.Stdout, in)
 }
