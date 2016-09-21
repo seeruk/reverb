@@ -1,3 +1,6 @@
+clean:
+	rm -rf ./dist
+
 build: build-binary
 
 build-binary:

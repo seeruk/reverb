@@ -16,7 +16,12 @@ func BuildRoutes(services Services) []Route {
 	return []Route{
 		// Home
 		{"/", "*", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			fmt.Fprint(w, "Welcome to Reverb.\n - Requests go in at /in\n - Requests come out at /out")
+			fmt.Fprint(
+				w,
+				"Welcome to Reverb.\n"+
+					" - Requests go in at /in/.*\n"+
+					" - Requests come out at /out",
+			)
 		})},
 
 		// Submission
@@ -26,5 +31,8 @@ func BuildRoutes(services Services) []Route {
 		{"/out", "GET", services.OutCollectionHandler},
 		{"/out/{id:[0-9]+}", "GET", services.OutResourceHandler},
 		{"/out/{id:[0-9]+}/body", "GET", services.OutResourceBodyHandler},
+
+		// Flush
+		{"/out", "DELETE", services.FlushHandler},
 	}
 }

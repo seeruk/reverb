@@ -6,4 +6,5 @@ type Driver interface {
 	FindAll(*[]model.Request) error
 	Find(int, *model.Request) error
 	Persist(*model.Request) error
+	Flush() error
 }

@@ -63,3 +63,10 @@ func (d *MemoryDriver) Persist(src *model.Request) error {
 
 	return nil
 }
+
+// Flush completely clears the in-memory storage.
+func (d *MemoryDriver) Flush() error {
+	d.requests = d.requests[:0]
+
+	return nil
+}

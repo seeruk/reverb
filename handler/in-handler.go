@@ -11,13 +11,13 @@ import (
 	"github.com/SeerUK/reverb/storage"
 )
 
-// ApiHandlerResponse represents the structure of the response given by the InHandler.
+// InHandlerResponse represents the structure of the response given by the InHandler.
 type InHandlerResponse struct {
 	ID      uint   `json:"id"`
 	Message string `json:"message"`
 }
 
-// ApiHandler records all requests that come to it in some storage.
+// InHandler records all requests that come to it in some storage.
 type InHandler struct {
 	storage storage.Driver
 }
@@ -46,7 +46,11 @@ func (h *InHandler) HandlerFunc(w http.ResponseWriter, r *http.Request) {
 
 	request.Body = string(body)
 
-	h.storage.Persist(&request)
+	err = h.storage.Persist(&request)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
 	json, err := json.Marshal(InHandlerResponse{
 		ID:      request.ID,

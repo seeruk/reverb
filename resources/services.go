@@ -13,6 +13,7 @@ type Services struct {
 	OutCollectionHandler   http.HandlerFunc
 	OutResourceBodyHandler http.HandlerFunc
 	OutResourceHandler     http.HandlerFunc
+	FlushHandler           http.HandlerFunc
 
 	// Storage
 	Storage storage.Driver

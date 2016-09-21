@@ -28,6 +28,7 @@ func main() {
 		OutCollectionHandler:   handler.NewOutCollectionHandler(&storage).HandlerFunc,
 		OutResourceBodyHandler: handler.NewOutResourceBodyHandler(&storage).HandlerFunc,
 		OutResourceHandler:     handler.NewOutResourceHandler(&storage).HandlerFunc,
+		FlushHandler:           handler.NewFlushHandler(&storage).HandlerFunc,
 		Storage:                &storage,
 	}
 
