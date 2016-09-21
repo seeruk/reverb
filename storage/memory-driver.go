@@ -1,9 +1,8 @@
 package storage
 
 import (
-	"sync"
-
 	"fmt"
+	"sync"
 
 	"github.com/SeerUK/reverb/model"
 )

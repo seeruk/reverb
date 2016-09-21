@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/SeerUK/reverb/handler"
 	"github.com/SeerUK/reverb/resources"
@@ -23,11 +24,11 @@ func main() {
 	storage := storage.MemoryDriver{}
 
 	services := resources.Services{
-		ApiHandler:                handler.NewApiHandler(&storage).HandlerFunc,
-		ReverbCollectionHandler:   handler.NewReverbCollectionHandler(&storage).HandlerFunc,
-		ReverbResourceBodyHandler: handler.NewReverbResourceBodyHandler(&storage).HandlerFunc,
-		ReverbResourceHandler:     handler.NewReverbResourceHandler(&storage).HandlerFunc,
-		Storage:                   &storage,
+		InHandler:              handler.NewInHandler(&storage).HandlerFunc,
+		OutCollectionHandler:   handler.NewOutCollectionHandler(&storage).HandlerFunc,
+		OutResourceBodyHandler: handler.NewOutResourceBodyHandler(&storage).HandlerFunc,
+		OutResourceHandler:     handler.NewOutResourceHandler(&storage).HandlerFunc,
+		Storage:                &storage,
 	}
 
 	router := mux.NewRouter()
@@ -47,7 +48,8 @@ func main() {
 }
 
 func applyRouterMiddleware(in *mux.Router) http.Handler {
-	cors := handlers.CORS()(in)
+	logr := handlers.LoggingHandler(os.Stdout, in)
+	cors := handlers.CORS()(logr)
 	cmpr := handlers.CompressHandler(cors)
 
 	return cmpr

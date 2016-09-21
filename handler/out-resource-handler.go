@@ -3,7 +3,6 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
-
 	"strconv"
 
 	"github.com/SeerUK/reverb/model"
@@ -11,20 +10,20 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// ReverbResourceHandler returns the the details of a stored request.
-type ReverbResourceHandler struct {
+// OutResourceHandler returns the the details of a stored request.
+type OutResourceHandler struct {
 	storage storage.Driver
 }
 
-// NewReverbResourceHandler creates a new, configured ReverbResourceHandler.
-func NewReverbResourceHandler(storage storage.Driver) *ReverbResourceHandler {
-	return &ReverbResourceHandler{
+// NewOutResourceHandler creates a new, configured OutResourceHandler.
+func NewOutResourceHandler(storage storage.Driver) *OutResourceHandler {
+	return &OutResourceHandler{
 		storage: storage,
 	}
 }
 
 // HandlerFunc is the actual HTTP handler.
-func (h *ReverbResourceHandler) HandlerFunc(w http.ResponseWriter, r *http.Request) {
+func (h *OutResourceHandler) HandlerFunc(w http.ResponseWriter, r *http.Request) {
 	var request model.Request
 
 	vars := mux.Vars(r)

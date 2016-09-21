@@ -1,30 +1,28 @@
 package handler
 
 import (
-	"net/http"
-
 	"encoding/json"
-
+	"net/http"
 	"time"
 
 	"github.com/SeerUK/reverb/model"
 	"github.com/SeerUK/reverb/storage"
 )
 
-// ReverbCollectionHandler returns the currently stored collection of requests.
-type ReverbCollectionHandler struct {
+// OutCollectionHandler returns the currently stored collection of requests.
+type OutCollectionHandler struct {
 	storage storage.Driver
 }
 
-// NewReverbCollectionHandler creates a new, configured ReverbCollectionHandler.
-func NewReverbCollectionHandler(storage storage.Driver) *ReverbCollectionHandler {
-	return &ReverbCollectionHandler{
+// NewOutCollectionHandler creates a new, configured OutCollectionHandler.
+func NewOutCollectionHandler(storage storage.Driver) *OutCollectionHandler {
+	return &OutCollectionHandler{
 		storage: storage,
 	}
 }
 
 // HandlerFunc is the actual HTTP handler.
-func (h *ReverbCollectionHandler) HandlerFunc(w http.ResponseWriter, r *http.Request) {
+func (h *OutCollectionHandler) HandlerFunc(w http.ResponseWriter, r *http.Request) {
 	var requests []model.Request
 
 	err := h.storage.FindAll(&requests)
@@ -33,10 +31,10 @@ func (h *ReverbCollectionHandler) HandlerFunc(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	var collectionItems []ReverbCollectionResponseItem
+	var collectionItems []OutCollectionResponseItem
 
 	for _, request := range requests {
-		collectionItems = append(collectionItems, ReverbCollectionResponseItem{
+		collectionItems = append(collectionItems, OutCollectionResponseItem{
 			ID:     request.ID,
 			Path:   request.Path,
 			Method: request.Method,
@@ -44,7 +42,7 @@ func (h *ReverbCollectionHandler) HandlerFunc(w http.ResponseWriter, r *http.Req
 		})
 	}
 
-	response := ReverbCollectionResponse{
+	response := OutCollectionResponse{
 		Requests: collectionItems,
 	}
 
@@ -59,14 +57,14 @@ func (h *ReverbCollectionHandler) HandlerFunc(w http.ResponseWriter, r *http.Req
 	w.Write(json)
 }
 
-// ReverbCollectionResponse represents the response for the ReverbCollectionHandler.
-type ReverbCollectionResponse struct {
-	Requests []ReverbCollectionResponseItem `json:"requests"`
+// OutCollectionResponse represents the response for the OutCollectionHandler.
+type OutCollectionResponse struct {
+	Requests []OutCollectionResponseItem `json:"requests"`
 }
 
-// ReverbCollectionResponseItem represents a simplified version of the model.Request struct, this
+// OutCollectionResponseItem represents a simplified version of the model.Request struct, this
 // is intended to make output smaller and easier to parse when looking at the collection.
-type ReverbCollectionResponseItem struct {
+type OutCollectionResponseItem struct {
 	ID     uint      `json:"id"`
 	Path   string    `json:"path"`
 	Method string    `json:"method"`

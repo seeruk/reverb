@@ -2,38 +2,35 @@ package handler
 
 import (
 	"encoding/json"
-	"net/http"
-
-	"time"
-
-	"strings"
-
 	"io/ioutil"
+	"net/http"
+	"strings"
+	"time"
 
 	"github.com/SeerUK/reverb/model"
 	"github.com/SeerUK/reverb/storage"
 )
 
-// ApiHandlerResponse represents the structure of the response given by the ApiHandler.
-type ApiHandlerResponse struct {
+// ApiHandlerResponse represents the structure of the response given by the InHandler.
+type InHandlerResponse struct {
 	ID      uint   `json:"id"`
 	Message string `json:"message"`
 }
 
 // ApiHandler records all requests that come to it in some storage.
-type ApiHandler struct {
+type InHandler struct {
 	storage storage.Driver
 }
 
-// NewApiHandler creates a new, configured ApiHandler.
-func NewApiHandler(storage storage.Driver) *ApiHandler {
-	return &ApiHandler{
+// NewInHandler creates a new, configured InHandler.
+func NewInHandler(storage storage.Driver) *InHandler {
+	return &InHandler{
 		storage: storage,
 	}
 }
 
 // HandlerFunc is the actual HTTP handler.
-func (h *ApiHandler) HandlerFunc(w http.ResponseWriter, r *http.Request) {
+func (h *InHandler) HandlerFunc(w http.ResponseWriter, r *http.Request) {
 	request := model.Request{
 		Path:    strings.TrimPrefix(r.RequestURI, "/api"),
 		Method:  r.Method,
@@ -51,7 +48,7 @@ func (h *ApiHandler) HandlerFunc(w http.ResponseWriter, r *http.Request) {
 
 	h.storage.Persist(&request)
 
-	json, err := json.Marshal(ApiHandlerResponse{
+	json, err := json.Marshal(InHandlerResponse{
 		ID:      request.ID,
 		Message: "OK",
 	})

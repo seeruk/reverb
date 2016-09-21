@@ -1,10 +1,8 @@
 package resources
 
 import (
+	"fmt"
 	"net/http"
-	"os"
-
-	"github.com/gorilla/handlers"
 )
 
 type Route struct {
@@ -16,17 +14,17 @@ type Route struct {
 // BuildRoutes takes pre-configured handlers, and assigns them to routes.
 func BuildRoutes(services Services) []Route {
 	return []Route{
-		// Retrieval
-		{"/reverb", "GET", applyMiddleware(services.ReverbCollectionHandler)},
-		{"/reverb/{id:[0-9]+}", "GET", applyMiddleware(services.ReverbResourceHandler)},
-		{"/reverb/{id:[0-9]+}/body", "GET", applyMiddleware(services.ReverbResourceBodyHandler)},
+		// Home
+		{"/", "*", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			fmt.Fprint(w, "Welcome to Reverb.\n - Requests go in at /in\n - Requests come out at /out")
+		})},
 
 		// Submission
-		{"/api/{path:.*}", "*", applyMiddleware(services.ApiHandler)},
-	}
-}
+		{"/in/{path:.*}", "*", services.InHandler},
 
-// applyMiddleware applies common middleware to some http.HandlerFunc, returning a http.Handler.
-func applyMiddleware(in http.HandlerFunc) http.Handler {
-	return handlers.LoggingHandler(os.Stdout, in)
+		// Retrieval
+		{"/out", "GET", services.OutCollectionHandler},
+		{"/out/{id:[0-9]+}", "GET", services.OutResourceHandler},
+		{"/out/{id:[0-9]+}/body", "GET", services.OutResourceBodyHandler},
+	}
 }

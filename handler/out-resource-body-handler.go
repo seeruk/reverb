@@ -3,7 +3,6 @@ package handler
 import (
 	"fmt"
 	"net/http"
-
 	"strconv"
 
 	"github.com/SeerUK/reverb/model"
@@ -12,19 +11,19 @@ import (
 )
 
 // ReverbResourceBodyHandler returns the body of a specific stored request.
-type ReverbResourceBodyHandler struct {
+type OutResourceBodyHandler struct {
 	storage storage.Driver
 }
 
-// NewReverbResourceBodyHandler creates a new, configured ReverbResourceBodyHandler.
-func NewReverbResourceBodyHandler(storage storage.Driver) *ReverbResourceBodyHandler {
-	return &ReverbResourceBodyHandler{
+// NewOutResourceBodyHandler creates a new, configured OutResourceBodyHandler.
+func NewOutResourceBodyHandler(storage storage.Driver) *OutResourceBodyHandler {
+	return &OutResourceBodyHandler{
 		storage: storage,
 	}
 }
 
 // HandlerFunc is the actual HTTP handler.
-func (h *ReverbResourceBodyHandler) HandlerFunc(w http.ResponseWriter, r *http.Request) {
+func (h *OutResourceBodyHandler) HandlerFunc(w http.ResponseWriter, r *http.Request) {
 	var request model.Request
 
 	vars := mux.Vars(r)

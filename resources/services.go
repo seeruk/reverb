@@ -9,10 +9,10 @@ import (
 // Services contains all of the shared services in the application.
 type Services struct {
 	// Handlers
-	ApiHandler                http.HandlerFunc
-	ReverbCollectionHandler   http.HandlerFunc
-	ReverbResourceBodyHandler http.HandlerFunc
-	ReverbResourceHandler     http.HandlerFunc
+	InHandler              http.HandlerFunc
+	OutCollectionHandler   http.HandlerFunc
+	OutResourceBodyHandler http.HandlerFunc
+	OutResourceHandler     http.HandlerFunc
 
 	// Storage
 	Storage storage.Driver
