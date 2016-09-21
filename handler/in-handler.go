@@ -32,7 +32,7 @@ func NewInHandler(storage storage.Driver) *InHandler {
 // HandlerFunc is the actual HTTP handler.
 func (h *InHandler) HandlerFunc(w http.ResponseWriter, r *http.Request) {
 	request := model.Request{
-		Path:    strings.TrimPrefix(r.RequestURI, "/api"),
+		Path:    strings.TrimPrefix(r.RequestURI, "/in"),
 		Method:  r.Method,
 		Headers: r.Header,
 		Time:    time.Now(),
