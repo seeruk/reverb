@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"time"
 
+	"fmt"
+
 	"github.com/SeerUK/reverb/model"
 	"github.com/SeerUK/reverb/storage"
 )
@@ -39,6 +41,7 @@ func (h *OutCollectionHandler) HandlerFunc(w http.ResponseWriter, r *http.Reques
 			Path:   request.Path,
 			Method: request.Method,
 			Time:   request.Time,
+			Link:   fmt.Sprintf("/out/%d", request.ID),
 		})
 	}
 
@@ -69,4 +72,5 @@ type OutCollectionResponseItem struct {
 	Path   string    `json:"path"`
 	Method string    `json:"method"`
 	Time   time.Time `json:"time"`
+	Link   string    `json:"link"`
 }

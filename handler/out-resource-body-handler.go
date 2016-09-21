@@ -40,5 +40,10 @@ func (h *OutResourceBodyHandler) HandlerFunc(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
+	contentType := request.Headers.Get("Content-Type")
+	if contentType != "" {
+		w.Header().Add("Content-Type", contentType)
+	}
+
 	fmt.Fprint(w, request.Body)
 }

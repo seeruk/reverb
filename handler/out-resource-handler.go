@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"strconv"
 
+	"fmt"
+
 	"github.com/SeerUK/reverb/model"
 	"github.com/SeerUK/reverb/storage"
 	"github.com/gorilla/mux"
@@ -40,8 +42,9 @@ func (h *OutResourceHandler) HandlerFunc(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	// Clear the body, we don't want to clog up the response body here
-	request.Body = ""
+	// Set the body to be a link to the URL to get the body. We don't want to clog up the output
+	// JSON here with what could be anything really.
+	request.Body = fmt.Sprintf("/out/%d/body", request.ID)
 
 	json, err := json.Marshal(request)
 
