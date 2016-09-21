@@ -19,5 +19,8 @@ build-binary:
 build-image: build-binary
 	docker build -t seeruk/reverb .
 
+push:
+	docker push seeruk/reverb:latest
+
 .PHONY: build
 .SILENT:
