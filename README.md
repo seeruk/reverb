@@ -1,7 +1,7 @@
 # Reverb
 
 Reverb is a simple HTTP server for testing / debugging / logging requests from some service. It 
-stores a request details in memory, and provides an interface to retrieve them later to inspect 
+stores a request's details in memory, and provides an interface to retrieve them later to inspect 
 them.
 
 ## Usage
